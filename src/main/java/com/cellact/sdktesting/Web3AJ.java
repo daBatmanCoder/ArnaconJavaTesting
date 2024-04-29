@@ -91,10 +91,8 @@ public class Web3AJ {
         Credentials credentials = wallet.getCredentials();
 
         byte[] messageBytes = prefixedMessage.getBytes();
-        byte[] messageHash = Hash.sha3(messageBytes);
-        System.out.println("Message Hash: " + Numeric.toHexString(messageHash));
 
-        Sign.SignatureData signature = Sign.signMessage(messageHash, credentials.getEcKeyPair());
+        Sign.SignatureData signature = Sign.signMessage(messageBytes, credentials.getEcKeyPair());
         System.out.println("Signature: " + Numeric.toHexString(signature.getR()));
         String sigHex = Numeric.toHexString(signature.getR()) 
                 + Numeric.toHexStringNoPrefix(signature.getS()) 
