@@ -20,12 +20,10 @@ import java.util.Random;
 import java.util.Arrays;
 
 import org.web3j.crypto.Credentials;
-import org.web3j.crypto.Hash;
 import org.web3j.crypto.Sign;
 import org.web3j.utils.Numeric;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 import org.web3j.abi.FunctionEncoder;
 import org.web3j.abi.TypeReference;
 import org.web3j.abi.datatypes.Address;
