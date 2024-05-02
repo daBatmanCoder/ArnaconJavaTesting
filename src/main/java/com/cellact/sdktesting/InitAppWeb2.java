@@ -16,9 +16,12 @@ public class InitAppWeb2 {
         ALogger logger = new Logger();
 
         Web3Service = new Web3AJ(dataSaveHelper, logger);
+
         System.out.println(Web3Service.wallet.getPublicKey());
+
         String[] serviceProviders = Web3Service.getServiceProviderList();
         Web3Service.setServiceProvider(serviceProviders[0]);
+
 
         // Fetch store
         String ipfsContent = Web3Service.fetchStore();
@@ -42,6 +45,7 @@ public class InitAppWeb2 {
 
         scanner.nextLine();
         scanner.close();
+        
         String fcm_token = "9c71ab46-370b-40f6-8235-bf1b03da1867";
         Web3Service.sendFCM(fcm_token);
 
