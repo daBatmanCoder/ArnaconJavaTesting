@@ -320,8 +320,10 @@ public class Web3AJ {
         try{
             String ensJsonString = "";
             String ens = "";
+            
             while (ensJsonString.isEmpty()) {
-                ensJsonString = Utils.CloudFunctions.getUserENS(this.wallet.getPublicKey(), null);
+
+                ensJsonString = getENS();
             }
 
             // Parse the JSON string to a JSONArray
