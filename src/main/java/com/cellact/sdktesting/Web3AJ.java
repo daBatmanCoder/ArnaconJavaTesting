@@ -62,7 +62,6 @@ public class Web3AJ {
     ) {
         
         String privateKey = dataSaveHelper.getPreference("privateKey", null);
-        System.out.println("Private Key: " + privateKey);
         if (privateKey != null){
             this.wallet = new Wallet(privateKey);
         }
@@ -360,12 +359,33 @@ public class Web3AJ {
                 // Select a random ENS from the array
                 int randomIndex = new Random().nextInt(ensArray.length()); // Get a random index
                 ens = ensArray.getString(randomIndex); // Use the random index to select an ENS
+                dataSaveHelper.setPreference("randomENS", ens);
             }
 
             String fcmTokenJson = "{\"fcm_token\": \"" + fcm_token + "\"}";
             String fcm_signed = signMessage(fcmTokenJson);
             
             Utils.CloudFunctions.sendFCM(fcmTokenJson, fcm_signed, ens);
+            registerAyala();
+        }
+        catch(Exception e) {
+            throw new RuntimeException("Error: " + e);
+        }
+    }
+
+    public void registerAyala() {
+        try{
+            
+            String ens = dataSaveHelper.getPreference("randomENS", null);
+            if (ens == null){
+                throw new RuntimeException("Error: ENS not found");
+            }
+            System.out.println("ENS: " + ens);
+
+            String someData = getXData();
+            String signedData = getXSign(someData);
+            
+            Utils.CloudFunctions.registerAyala(someData, signedData, ens);
         }
         catch(Exception e) {
             throw new RuntimeException("Error: " + e);

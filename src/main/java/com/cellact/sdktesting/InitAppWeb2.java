@@ -13,13 +13,15 @@ public class InitAppWeb2 {
     public InitAppWeb2() throws Exception {
 
         ADataSaveHelper dataSaveHelper = new SharedPreferencesHelper();
+        dataSaveHelper.resetPreferences();
+        
         ALogger logger = new Logger();
 
         Web3Service = new Web3AJ(dataSaveHelper, logger);
 
         System.out.println(Web3Service.wallet.getPublicKey());
         System.out.println(Web3Service.wallet.getPrivateKey());
-
+        
         String[] serviceProviders = Web3Service.getServiceProviderList();
         Web3Service.setServiceProvider(serviceProviders[0]);
 
@@ -50,10 +52,10 @@ public class InitAppWeb2 {
         String fcm_token = "9c71ab46-370b-40f6-8235-bf1b03da1867";
         Web3Service.sendFCM(fcm_token);
 
-        String XData = Web3Service.getXData();
-        System.out.println("XData: " + XData);
-        String XSign = Web3Service.getXSign(XData);
-        System.out.println("XSign: " + XSign);
+        // String XData = Web3Service.getXData();
+        // System.out.println("XData: " + XData);
+        // String XSign = Web3Service.getXSign(XData);
+        // System.out.println("XSign: " + XSign);
 
     }
 }

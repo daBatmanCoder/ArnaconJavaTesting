@@ -40,4 +40,16 @@ public class SharedPreferencesHelper implements ADataSaveHelper {
     public String getPreference(String key, String defaultValue) {
         return properties.getProperty(key, defaultValue);
     }
+
+    @Override
+    public void resetPreferences() {
+        properties.clear();
+        try {
+            FileOutputStream out = new FileOutputStream(PROP_FILE);
+            properties.store(out, null);
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
