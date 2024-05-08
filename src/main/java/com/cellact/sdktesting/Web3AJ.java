@@ -447,5 +447,9 @@ public class Web3AJ {
     ) {
         dataSaveHelper.setPreference("serviceProviderName", serviceProviderName);
     }
+
+    public String getCalleeDomain(String callee) {
+        return Utils.CloudFunctions.getCalleeDomain(callee);
+    }
 }
 

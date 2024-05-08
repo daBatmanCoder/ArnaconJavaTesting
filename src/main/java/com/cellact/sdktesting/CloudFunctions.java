@@ -23,6 +23,7 @@ public class CloudFunctions {
     private String get_contracts_url;
     private String send_fcm_url;
     private String send_register_ayala;
+    private String get_callee_domain;
     public  String send_stripe_url;
 
 
@@ -38,7 +39,7 @@ public class CloudFunctions {
         this.send_stripe_url = urlsObject.getString(            "send_stripe");
         this.send_fcm_url = urlsObject.getString(               "send_secure_fcmToken");
         this.send_register_ayala = urlsObject.getString(        "register_ayala");
-
+        this.get_callee_domain = urlsObject.getString(          "get_callee_domain");
     }
 
     private String requestGetFromCloud(String RequestURL,boolean lowerCase) {
@@ -222,6 +223,12 @@ public class CloudFunctions {
         String jsonInputString = "{\"data\": \"" + data + "\", \"signedData\": \"" + signedData + "\", \"ens\": \"" + ens + "\"}";
         System.out.println(jsonInputString);
         requestPostToCloud(send_register_ayala, jsonInputString);
+    }
+
+    public String getCalleeDomain(String callee) {
+        String jsonInputString = "{\"ens\": \"" + callee + "\"}";
+        System.out.println(jsonInputString);
+        return requestPostToCloud(get_callee_domain, jsonInputString);
     }
 
 }
