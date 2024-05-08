@@ -350,6 +350,9 @@ public class Web3AJ {
             while (ensJsonString.isEmpty()) {
 
                 ensJsonString = getENS();
+                if (ensJsonString == null){
+                    ensJsonString = "";
+                }
             }
 
             // Parse the JSON string to a JSONArray
