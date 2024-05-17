@@ -21,19 +21,23 @@ import org.web3j.crypto.Credentials;
 import org.web3j.crypto.MnemonicUtils;
 import org.web3j.utils.Numeric;
 
+import com.cellact.Config.ALogger;
+
 public class Wallet {
 
     String mnemonic;
     String privateKey;
     String publicKeyRSA;
     String privateKeyRSA;
+    ALogger logger;
 
     private static final int[] DERIVATION_PATH = {44 | Bip32ECKeyPair.HARDENED_BIT, 60 | Bip32ECKeyPair.HARDENED_BIT, 0 | Bip32ECKeyPair.HARDENED_BIT, 0, 0};
 
     // Constructor with no private key
-    public Wallet() {
+    public Wallet(ALogger logger) {
+        this.logger = logger;
         this.mnemonic = generateMnemonic();
-        generateKeyPair();
+        generateKeyPair(logger);
         this.privateKey = getPrivateKeyFromMnemonic(this.mnemonic);
     }
 
@@ -84,7 +88,7 @@ public class Wallet {
         return Credentials.create(this.privateKey);
     }
 
-    public void generateKeyPair() {
+    public void generateKeyPair(ALogger logger) {
         try {
             KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
             keyPairGenerator.initialize(2048);  // You can use 1024 or 2048 for RSA key size
@@ -93,7 +97,7 @@ public class Wallet {
             this.privateKeyRSA = convertToPemFormat(keyPair.getPublic());
             keyPair.getPrivate();
         } catch (NoSuchAlgorithmException e) {
-            System.err.println("Failed to generate key pair: " + e.getMessage());
+            logger.error("Failed to generate key pair: ", e);
         }
     }
 
@@ -101,12 +105,12 @@ public class Wallet {
         return this.publicKeyRSA;
     }
 
-    public String decrypt(String encryptedData) {
+    public String decrypt(String encryptedData, ALogger logger) {
         try {
             PrivateKey privateKey = loadPrivateKey(this.privateKeyRSA);
             return decryptData(privateKey, encryptedData);
         } catch (Exception e) {
-            System.err.println("Failed to decrypt data: " + e.getMessage());
+            logger.error("Failed to decrypt data: ", e);
             return null;
         }
     }

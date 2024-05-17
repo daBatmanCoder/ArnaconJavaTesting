@@ -3,6 +3,8 @@ package com.cellact.sdktesting;
 import com.cellact.Config.ANetwork;
 import com.cellact.Config.ADataSaveHelper;
 import com.cellact.Config.ALogger;
+import com.cellact.Config.AWeb3AJ;
+
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -47,38 +49,28 @@ import org.web3j.tx.TransactionManager;
 import org.web3j.tx.response.PollingTransactionReceiptProcessor;
 
 
-public class Web3AJ {
+public class Web3AJ extends AWeb3AJ{
 
     Web3j web3j;
     Wallet wallet;
     ANetwork network; // Ethereum / Polygon / Binance Smart Chain
-    ADataSaveHelper dataSaveHelper;
-    ALogger logger;
 
     // Constructor (with network specified)
     public Web3AJ(
         ADataSaveHelper dataSaveHelper, 
         ALogger logger
     ) {
-        
+        super(dataSaveHelper, logger); // Saves the logger and datahelper and init the cloudfunctions class with logger
+
         String privateKey = dataSaveHelper.getPreference("privateKey", null);
         if (privateKey != null){
             this.wallet = new Wallet(privateKey);
         }
         else{
-            this.wallet = new Wallet();
+            this.wallet = new Wallet(logger);
             dataSaveHelper.setPreference("privateKey", this.wallet.getPrivateKey());
         }
 
-        commonConstructor(dataSaveHelper,logger);
-    }
-
-    private void commonConstructor(
-        ADataSaveHelper dataSaveHelper, 
-        ALogger logger
-    ){
-        this.dataSaveHelper = dataSaveHelper;
-        this.logger = logger;
     }
 
 
@@ -117,7 +109,7 @@ public class Web3AJ {
         byte[] messageBytes = prefixedMessage.getBytes();
 
         Sign.SignatureData signature = Sign.signMessage(messageBytes, credentials.getEcKeyPair());
-        System.out.println("Signature: " + Numeric.toHexString(signature.getR()));
+        // logger.debug("Signature: " + Numeric.toHexString(signature.getR()));
         String sigHex = Numeric.toHexString(signature.getR()) 
                 + Numeric.toHexStringNoPrefix(signature.getS()) 
                 + Numeric.toHexStringNoPrefix(new byte[]{signature.getV()[0]});
@@ -307,7 +299,7 @@ public class Web3AJ {
     public String fetchStore() throws Exception {
 
         String serviceProviderName = dataSaveHelper.getPreference("serviceProviderName", null);
-        System.out.println("Service Provider: " + serviceProviderName);
+        logger.debug("Service Provider: " + serviceProviderName);
 
         String cid = Utils.CloudFunctions.getShopCID(serviceProviderName);
 
@@ -383,7 +375,7 @@ public class Web3AJ {
             if (ens == null){
                 throw new RuntimeException("Error: ENS not found");
             }
-            System.out.println("ENS: " + ens);
+            logger.debug("ENS: " + ens);
 
             String someData = getXData();
             String signedData = getXSign(someData);

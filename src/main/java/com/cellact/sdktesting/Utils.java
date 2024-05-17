@@ -9,16 +9,22 @@ import org.json.JSONArray;
 import org.json.JSONObject; // Make sure to include the JSON library in your project
 
 import com.cellact.Config.ADataSaveHelper;
+import com.cellact.Config.ALogger;
+
 
 public class Utils {
 
-    public static CloudFunctions CloudFunctions = new CloudFunctions();
+    public static CloudFunctions CloudFunctions;
     public static Contracts Contracts = new Contracts();
 
     static String PAYMENT_DEEPLINK_OK = "https://success-java.vercel.app/";
     static String PAYMENT_DEEPLINK_NOK = "https://failure-java.vercel.app/";
 
     static String redirectURL = "https://redirect-generation.vercel.app?redirect=";
+
+    public static void newCloudFunctions(ALogger logger) {
+        CloudFunctions = new CloudFunctions(logger);
+    }
 
     static boolean isValidPackage(String packageNum, String jsonStore) {
         // Parse the JSON data
@@ -125,6 +131,7 @@ public class Utils {
             }
 
         } catch (Exception e) {
+
             System.out.println("There was a problem with the fetch operation: " + e.getMessage());
         }
 

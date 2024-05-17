@@ -16,9 +16,9 @@ public class Network implements ANetwork{
     
     public Network(String _networkName) {
         try {
-            CloudFunctions cloudFunctions = new CloudFunctions();
             this.networkName = _networkName;
-            JSONObject networkConfig = cloudFunctions.getNetwork(networkName);
+            
+            JSONObject networkConfig = Utils.CloudFunctions.getNetwork(networkName);
             this.ENTRY_POINT_URL = networkConfig.getString("entry_point_url");
             this.CHAIN_ID = networkConfig.getInt("chain_id");
 

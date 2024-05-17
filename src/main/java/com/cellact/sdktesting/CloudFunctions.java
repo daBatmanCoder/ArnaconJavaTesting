@@ -11,6 +11,8 @@ import java.net.URLEncoder;
 
 import org.json.JSONObject;
 
+import com.cellact.Config.ALogger;
+
 import io.reactivex.annotations.Nullable;
 
 public class CloudFunctions {
@@ -25,10 +27,11 @@ public class CloudFunctions {
     private String send_register_ayala;
     private String get_callee_domain;
     public  String send_stripe_url;
+    private ALogger logger;
 
-
-    public CloudFunctions() {
-
+    public CloudFunctions(ALogger logger) {
+        
+        this.logger = logger;
         String urls = requestGetFromCloud(MASTER_URL, false);
         JSONObject urlsObject = new JSONObject(urls);
 
@@ -79,7 +82,7 @@ public class CloudFunctions {
                     
                 }
             } else {
-                System.out.println("GET request failed. Response Code: " + responseCode);
+                logger.debug("GET request failed. Response Code: " + responseCode);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -123,7 +126,7 @@ public class CloudFunctions {
                     result = response.toString();
                 }
             } else {
-                System.out.println("POST request failed. Response Code: " + responseCode);
+                logger.debug("POST request failed. Response Code: " + responseCode);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -164,8 +167,6 @@ public class CloudFunctions {
             // Close the JSON input string
             jsonBuilder.append("}");
     
-            // Send the POST request with the constructed JSON input string
-            System.out.println( requestPostToCloud(ens_url, jsonBuilder.toString()));
             return requestPostToCloud(ens_url, jsonBuilder.toString());
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -221,13 +222,11 @@ public class CloudFunctions {
 
     public void registerAyala(String data, String signedData, String ens) {
         String jsonInputString = "{\"data\": \"" + data + "\", \"signedData\": \"" + signedData + "\", \"ens\": \"" + ens + "\"}";
-        System.out.println(jsonInputString);
         requestPostToCloud(send_register_ayala, jsonInputString);
     }
 
     public String getCalleeDomain(String callee) {
         String jsonInputString = "{\"ens\": \"" + callee + "\"}";
-        System.out.println(jsonInputString);
         return requestPostToCloud(get_callee_domain, jsonInputString);
     }
 

@@ -19,20 +19,19 @@ public class InitAppWeb2 {
 
         Web3Service = new Web3AJ(dataSaveHelper, logger);
 
-        System.out.println(Web3Service.wallet.getPublicKey());
-        System.out.println(Web3Service.wallet.getPrivateKey());
-        
+        logger.debug("Public key: " + Web3Service.wallet.getPublicKey());  
+
         String[] serviceProviders = Web3Service.getServiceProviderList();
         Web3Service.setServiceProvider(serviceProviders[0]);
 
-
+            //hhg
         // Fetch store
         String ipfsContent = Web3Service.fetchStore();
-        System.out.println("Store: " + ipfsContent);
+        logger.debug("Store: " + ipfsContent);
 
         // // Choose a product
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter package you want: ");
+        logger.debug("Enter package you want:");
         String packageNum = scanner.nextLine();
 
         String successURL = "https://www.cellact.com";
@@ -44,7 +43,7 @@ public class InitAppWeb2 {
             successURL,
             cancelURL
         );
-        System.out.println("Payment URL: " + url);
+        logger.debug("Payment URL: " + url);
 
         scanner.nextLine();
         scanner.close();
@@ -52,13 +51,14 @@ public class InitAppWeb2 {
         String fcm_token = "Cl2fX1UQt-R7vY0NxmVV9:APA91bHZdgZ4XvSvq5FDTBI7SCMY1794XQEHpjYE9I_tUIgb5nqoyqt4xoSut_Il7wqW1pFOwV75I80-CvwkQ7NgCqTU9HWGUhp_TZbsbZS3NvxjNcYUTjpKghVxRijafkrE-Wn3hIRH";
         Web3Service.sendFCM(fcm_token);
 
-        String domainOfCallee = Web3Service.getCalleeDomain("dIamIORAGOdNDrDv");
-        System.out.println("Domain of callee: " + domainOfCallee);
+        // String domainOfCallee = Web3Service.getCalleeDomain("dIamIORAGOdNDrDv");
+        // logger.debug("Domain of callee: " + domainOfCallee);
 
-        // String XData = Web3Service.getXData();
-        // System.out.println("XData: " + XData);
-        // String XSign = Web3Service.getXSign(XData);
-        // System.out.println("XSign: " + XSign);
+        String XData = Web3Service.getXData();
+        logger.debug("XData: " + XData);
+        String XSign = Web3Service.getXSign(XData);
+        logger.debug("XSign: " + XSign);
+
 
     }
 }
