@@ -21,8 +21,18 @@ public class InitAppWeb2 {
 
         logger.debug("Public key: " + Web3Service.wallet.getPublicKey());  
 
+        Scanner scanner = new Scanner(System.in);
+
+
         String[] serviceProviders = Web3Service.getServiceProviderList();
-        Web3Service.setServiceProvider(serviceProviders[0]);
+        int counter = 1;
+        for (String provider : serviceProviders) {
+            logger.debug("Service provider: " + counter + "." + provider);
+            counter++;
+        }
+        logger.debug("Enter service provider you want:");
+        String serviceProvider = scanner.nextLine();
+        Web3Service.setServiceProvider(serviceProviders[Integer.parseInt(serviceProvider) - 1]);
 
             //hhg
         // Fetch store
@@ -30,7 +40,6 @@ public class InitAppWeb2 {
         logger.debug("Store: " + ipfsContent);
 
         // // Choose a product
-        Scanner scanner = new Scanner(System.in);
         logger.debug("Enter package you want:");
         String packageNum = scanner.nextLine();
 
