@@ -14,17 +14,21 @@ import com.cellact.Config.ALogger;
 
 public class Utils {
 
-    public static CloudFunctions CloudFunctions;
+    private static CloudFunctions CloudFunctionsInst;
     public static Contracts Contracts = new Contracts();
+
+    public static CloudFunctions getCloudFunctions(ALogger logger) {
+        if (CloudFunctionsInst == null) {
+            CloudFunctionsInst = CloudFunctions.getCloudFunctions(logger);
+        }
+        return CloudFunctionsInst;
+    }
+
 
     static String PAYMENT_DEEPLINK_OK = "https://success-java.vercel.app/";
     static String PAYMENT_DEEPLINK_NOK = "https://failure-java.vercel.app/";
 
     static String redirectURL = "https://redirect-generation.vercel.app?redirect=";
-
-    public static void newCloudFunctions(ALogger logger) {
-        CloudFunctions = new CloudFunctions(logger);
-    }
 
     static boolean isValidPackage(String packageNum, String jsonStore) {
         // Parse the JSON data
@@ -57,7 +61,7 @@ public class Utils {
         }
     }
 
-    static String getPaymentURL(String userID, String packageNum, String jsonStore, String successURL, String cancelURL, ADataSaveHelper dataSaveHelper) {
+    static String getPaymentURL(String userID, String packageNum, String jsonStore, String successURL, String cancelURL, ADataSaveHelper dataSaveHelper, ALogger logger) {
         boolean isValid = Utils.isValidPackage(packageNum, jsonStore);
         if (!isValid) {
             System.out.println("The package number is not valid.");
@@ -91,7 +95,7 @@ public class Utils {
 
             // Prepare the URL and open connection
             @SuppressWarnings("deprecation")
-            URL url = new URL(CloudFunctions.send_stripe_url);
+            URL url = new URL(getCloudFunctions(logger).send_stripe_url);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");

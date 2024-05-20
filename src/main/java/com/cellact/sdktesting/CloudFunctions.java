@@ -18,6 +18,8 @@ import io.reactivex.annotations.Nullable;
 public class CloudFunctions {
 
     private String MASTER_URL = "https://us-central1-arnacon-nl.cloudfunctions.net/Functions";
+    
+    private static CloudFunctions instance;
 
     private String ens_url;
     private String get_service_provider_url;
@@ -27,9 +29,10 @@ public class CloudFunctions {
     private String send_register_ayala;
     private String get_callee_domain;
     public  String send_stripe_url;
+
     private ALogger logger;
 
-    public CloudFunctions(ALogger logger) {
+    private CloudFunctions(ALogger logger) {
         
         this.logger = logger;
         String urls = requestGetFromCloud(MASTER_URL, false);
@@ -43,6 +46,17 @@ public class CloudFunctions {
         this.send_fcm_url = urlsObject.getString(               "send_secure_fcmToken");
         this.send_register_ayala = urlsObject.getString(        "register_ayala");
         this.get_callee_domain = urlsObject.getString(          "get_callee_domain");
+    }
+
+    public static CloudFunctions getCloudFunctions(ALogger logger) {
+        if (instance == null) {  // First check (no locking)
+            synchronized (CloudFunctions.class) {
+                if (instance == null) {  // Second check (with locking)
+                    instance = new CloudFunctions(logger);
+                }
+            }
+        }
+        return instance;
     }
 
     private String requestGetFromCloud(String RequestURL,boolean lowerCase) {

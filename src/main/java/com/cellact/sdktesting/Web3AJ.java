@@ -301,7 +301,7 @@ public class Web3AJ extends AWeb3AJ{
         String serviceProviderName = dataSaveHelper.getPreference("serviceProviderName", null);
         logger.debug("Service Provider: " + serviceProviderName);
 
-        String cid = Utils.CloudFunctions.getShopCID(serviceProviderName);
+        String cid = Utils.getCloudFunctions(logger).getShopCID(serviceProviderName);
 
         // Use a public IPFS gateway to fetch the content. You can also use a local IPFS node if you have one running.
         String ipfsGateway = "https://ipfs.io/ipfs/";
@@ -360,7 +360,7 @@ public class Web3AJ extends AWeb3AJ{
             String fcmTokenJson = "{\"fcm_token\": \"" + fcm_token + "\"}";
             String fcm_signed = signMessage(fcmTokenJson);
             
-            Utils.CloudFunctions.sendFCM(fcmTokenJson, fcm_signed, ens);
+            Utils.getCloudFunctions(logger).sendFCM(fcmTokenJson, fcm_signed, ens);
             registerAyala();
         }
         catch(Exception e) {
@@ -380,7 +380,7 @@ public class Web3AJ extends AWeb3AJ{
             String someData = getXData();
             String signedData = getXSign(someData);
             
-            Utils.CloudFunctions.registerAyala(someData, signedData, ens);
+            Utils.getCloudFunctions(logger).registerAyala(someData, signedData, ens);
         }
         catch(Exception e) {
             throw new RuntimeException("Error: " + e);
@@ -398,12 +398,13 @@ public class Web3AJ extends AWeb3AJ{
             dataSaveHelper.getPreference("store", packageNum), 
             successDP, 
             cancelDP,
-            dataSaveHelper
+            dataSaveHelper,
+            logger
         );
     }
 
     public String[] getServiceProviderList(){
-        return Utils.CloudFunctions.getServiceProviderList();
+        return Utils.getCloudFunctions(logger).getServiceProviderList();
     }
 
     public String getENS() {
@@ -414,7 +415,7 @@ public class Web3AJ extends AWeb3AJ{
             return ensList;
         }
 
-        String ens = Utils.CloudFunctions.getUserENS(this.wallet.getPublicKey(), null);
+        String ens = Utils.getCloudFunctions(logger).getUserENS(this.wallet.getPublicKey(), null);
         if (ens.equals("Error")){
             return null;
         }
@@ -430,7 +431,7 @@ public class Web3AJ extends AWeb3AJ{
 
     public String getENS(String customerID) {
         
-        String ens = Utils.CloudFunctions.getUserENS(this.wallet.getPublicKey(),customerID);
+        String ens = Utils.getCloudFunctions(logger).getUserENS(this.wallet.getPublicKey(),customerID);
         if (ens.equals("Error")){
             return null;
         }
@@ -444,7 +445,7 @@ public class Web3AJ extends AWeb3AJ{
     }
 
     public String getCalleeDomain(String callee) {
-        return Utils.CloudFunctions.getCalleeDomain(callee);
+        return Utils.getCloudFunctions(logger).getCalleeDomain(callee);
     }
 }
 
