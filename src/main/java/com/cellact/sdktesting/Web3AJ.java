@@ -167,13 +167,13 @@ public class Web3AJ extends AWeb3AJ{
             encodedFunction, 
             valueInWei, 
             gasPrice, 
-            Utils.Contracts.NAME_HASH_ADDRESS
+            Utils.getContracts(logger).NAME_HASH_ADDRESS
         );
 
         EthSendTransaction response = transactionManager.sendTransaction(
                 gasPrice,
                 estimatedGasLimit,
-                Utils.Contracts.NAME_HASH_ADDRESS,
+                Utils.getContracts(logger).NAME_HASH_ADDRESS,
                 encodedFunction,
                 valueInWei
         );
@@ -217,13 +217,13 @@ public class Web3AJ extends AWeb3AJ{
                 encodedFunction, 
                 valueInWei, 
                 gasPrice,
-                Utils.Contracts.W_ENS_ADDRESS
+                Utils.getContracts(logger).W_ENS_ADDRESS
             );
 
             EthSendTransaction response = transactionManager.sendTransaction(
                     gasPrice,
                     estimatedGasLimit,
-                    Utils.Contracts.W_ENS_ADDRESS,
+                    Utils.getContracts(logger).W_ENS_ADDRESS,
                     encodedFunction,
                     valueInWei 
             );
@@ -404,7 +404,8 @@ public class Web3AJ extends AWeb3AJ{
     }
 
     public String[] getServiceProviderList(){
-        return Utils.getCloudFunctions(logger).getServiceProviderList();
+        CloudFunctions cloudFunctions = Utils.getCloudFunctions(logger);
+        return cloudFunctions.getServiceProviderList();
     }
 
     public String getENS() {

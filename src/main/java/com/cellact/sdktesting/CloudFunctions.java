@@ -150,7 +150,6 @@ public class CloudFunctions {
     }
 
     public String[] getServiceProviderList(){
-
         String serviceProviders = requestGetFromCloud(
             get_service_provider_url, 
             false

@@ -15,7 +15,7 @@ import com.cellact.Config.ALogger;
 public class Utils {
 
     private static CloudFunctions CloudFunctionsInst;
-    public static Contracts Contracts = new Contracts();
+    private static Contracts ContractsInst;
 
     public static CloudFunctions getCloudFunctions(ALogger logger) {
         if (CloudFunctionsInst == null) {
@@ -23,7 +23,13 @@ public class Utils {
         }
         return CloudFunctionsInst;
     }
-
+    
+    public static Contracts getContracts(ALogger logger) {
+        if (ContractsInst == null) {
+            ContractsInst = Contracts.getContracts(logger);
+        }
+        return ContractsInst;
+    }
 
     static String PAYMENT_DEEPLINK_OK = "https://success-java.vercel.app/";
     static String PAYMENT_DEEPLINK_NOK = "https://failure-java.vercel.app/";
