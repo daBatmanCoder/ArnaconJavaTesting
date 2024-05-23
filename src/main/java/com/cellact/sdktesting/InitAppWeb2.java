@@ -23,8 +23,10 @@ public class InitAppWeb2 {
 
         Scanner scanner = new Scanner(System.in);
 
+        // open URL Here-
+        // 
 
-        String[] serviceProviders = Web3Service.getServiceProviderList();
+        String[] serviceProviders = Web3Service.getServiceProviderList(); // Change for a generic URL for the service provider 
         int counter = 1;
         for (String provider : serviceProviders) {
             logger.debug("Service provider: " + counter + "." + provider);
@@ -34,10 +36,11 @@ public class InitAppWeb2 {
         String serviceProvider = scanner.nextLine();
         Web3Service.setServiceProvider(serviceProviders[Integer.parseInt(serviceProvider) - 1]);
 
-            //hhg
         // Fetch store
         String ipfsContent = Web3Service.fetchStore();
         logger.debug("Store: " + ipfsContent);
+
+        // generate_commitment(nullifier,secret)
 
         // // Choose a product
         logger.debug("Enter package you want:");
@@ -51,8 +54,13 @@ public class InitAppWeb2 {
             packageNum,
             successURL,
             cancelURL
+            // commitment
         );
+
+        // window.href(url);
         logger.debug("Payment URL: " + url);
+
+        // send_mediator(url,commitment)
 
         scanner.nextLine();
         scanner.close();
