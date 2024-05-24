@@ -41,6 +41,7 @@ public class InitAppWeb2 {
         logger.debug("Store: " + ipfsContent);
 
         // generate_commitment(nullifier,secret)
+        Web3Service.prepareForProof();
 
         // // Choose a product
         logger.debug("Enter package you want:");
@@ -60,7 +61,7 @@ public class InitAppWeb2 {
         // window.href(url);
         logger.debug("Payment URL: " + url);
 
-        // send_mediator(url,commitment)
+        Web3Service.send_mediator(url);
 
         scanner.nextLine();
         scanner.close();

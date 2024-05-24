@@ -448,5 +448,29 @@ public class Web3AJ extends AWeb3AJ{
     public String getCalleeDomain(String callee) {
         return Utils.getCloudFunctions(logger).getCalleeDomain(callee);
     }
+
+
+    public void prepareForProof() {
+        
+        String nullifier = "8273492374982734987293479283749237498231231231234";// Generate here a byte 31 crypto bytes
+        String Secret = "8273492374982734987293479283749237498234" ;// Generate here a byte 31 crypto bytes
+        dataSaveHelper.setPreference("nullifier", nullifier);
+        dataSaveHelper.setPreference("secret", Secret);
+
+    }
+
+
+    public void send_mediator(String url) {
+        if (
+            dataSaveHelper.getPreference("secret", null) == null && 
+            dataSaveHelper.getPreference("nullifier", null) == null) {
+                prepareForProof();
+        }
+
+        String secret = dataSaveHelper.getPreference("secret", null);
+        String nullifier = dataSaveHelper.getPreference("nullifier", null );
+        
+        Utils.getCloudFunctions(logger).openMedianShop(url,secret,nullifier);
+    }
 }
 
