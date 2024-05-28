@@ -25,6 +25,12 @@ import java.util.Base64;
 
 import java.time.Instant;
 
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import org.web3j.crypto.Credentials;
 import org.web3j.crypto.Sign;
 import org.web3j.utils.Numeric;
@@ -54,6 +60,9 @@ public class Web3AJ extends AWeb3AJ{
     Web3j web3j;
     Wallet wallet;
     ANetwork network; // Ethereum / Polygon / Binance Smart Chain
+
+    private static final String ALGORITHM = "AES";
+    private static final String TRANSFORMATION = "AES/ECB/PKCS5Padding";
 
     // Constructor (with network specified)
     public Web3AJ(
@@ -468,27 +477,55 @@ public class Web3AJ extends AWeb3AJ{
         return Utils.getCloudFunctions(logger).getCalleeDomain(callee);
     }
 
-    // public void prepareForProof() {
-        
-    //     String nullifier = "8273492374982734987293479283749237498231231231234";// Generate here a byte 31 crypto bytes
-    //     String Secret = "8273492374982734987293479283749237498234" ;// Generate here a byte 31 crypto bytes
-    //     dataSaveHelper.setPreference("nullifier", nullifier);
-    //     dataSaveHelper.setPreference("secret", Secret);
+    private byte[] decrypt(byte[] ciphertext, String password) throws Exception {
+        SecretKeySpec secretKey = deriveKeyFromPassword(password);
+        Cipher cipher = Cipher.getInstance(TRANSFORMATION);
+        cipher.init(Cipher.DECRYPT_MODE, secretKey);
+        return cipher.doFinal(ciphertext);
+    }
 
-    // }
+    private SecretKeySpec deriveKeyFromPassword(String password) throws NoSuchAlgorithmException {
+        MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
+        byte[] key = sha256.digest(password.getBytes(StandardCharsets.UTF_8));
+        key = Arrays.copyOf(key, 16); // Use only the first 128 bits
+        return new SecretKeySpec(key, ALGORITHM);
+    }
+
+    private byte[] hexStringToByteArray(String hexString) {
+        int len = hexString.length();
+        byte[] data = new byte[len / 2];
+        for (int i = 0; i < len; i += 2) {
+            data[i / 2] = (byte) ((Character.digit(hexString.charAt(i), 16) << 4)
+                    + Character.digit(hexString.charAt(i + 1), 16));
+        }
+        return data;
+    }
+
+    private String bytesToHex(byte[] bytes) {
+        StringBuilder hexString = new StringBuilder();
+        for (byte b : bytes) {
+            String hex = Integer.toHexString(0xff & b);
+            if (hex.length() == 1) {
+                hexString.append('0');
+            }
+            hexString.append(hex);
+        }
+        return hexString.toString();
+    }
 
 
-    // public void send_mediator(String url) {
-    //     if (
-    //         dataSaveHelper.getPreference("secret", null) == null && 
-    //         dataSaveHelper.getPreference("nullifier", null) == null) {
-    //             prepareForProof();
-    //     }
+    public String getDecryptedHex(String password, String ciphertextHex) {
+        try {
+            byte[] ciphertext = hexStringToByteArray(ciphertextHex);
+            byte[] decryptedData = decrypt(ciphertext, password);
+            String decryptedHex = bytesToHex(decryptedData);
+            return decryptedHex;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
-    //     String secret = dataSaveHelper.getPreference("secret", null);
-    //     String nullifier = dataSaveHelper.getPreference("nullifier", null );
-        
-    //     Utils.getCloudFunctions(logger).openMedianShop(url,secret,nullifier);
-    // }
+
 }
 
