@@ -28,6 +28,7 @@ public class CloudFunctions {
     private String send_fcm_url;
     private String send_register_ayala;
     private String get_callee_domain;
+    // private String register_ens;
     // private String median_to_generate_proof_url;
     public  String send_stripe_url;
 
@@ -245,6 +246,11 @@ public class CloudFunctions {
         String jsonInputString = "{\"ens\": \"" + callee + "\"}";
         return requestPostToCloud(get_callee_domain, jsonInputString);
     }
+
+    // public String setNewENS(String ens, String SignedENS, String user_address) {
+    //     String jsonInputString = "{\"user_address\": \"" + user_address + "\", \"SignedENS\": \"" + SignedENS + "\", \"ens\": \"" + ens + "\"}";
+    //     return requestPostToCloud(register_ens, jsonInputString);
+    // }
 
     // public void openMedianShop(
     //     String url, 
