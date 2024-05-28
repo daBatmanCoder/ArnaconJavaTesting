@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Arrays;
 import java.util.UUID;
-
+import java.util.Base64;
 
 import java.time.Instant;
 
@@ -89,11 +89,30 @@ public class Web3AJ extends AWeb3AJ{
     }
 
     public String getXSign(String data){
-        // String xsign = dataSaveHelper.getPreference("xsign", null);
-        // if (xdata != null){
-        //     return xdata;
-        // }
-        return signMessage(data);
+        return compressXSign(signMessage(data));
+    }
+
+    public String compressXSign(String hexString) {
+
+        if (hexString.startsWith("0x")) {
+            hexString = hexString.substring(2);
+        }
+        
+        // Convert the hexadecimal string to bytes
+        byte[] bytes = hexToBytes(hexString);
+        
+        // Base64 encode the bytes
+        String base64String = Base64.getEncoder().encodeToString(bytes);
+        
+        return base64String;
+    }
+    
+    private static byte[] hexToBytes(String hex) {
+        byte[] bytes = new byte[hex.length() / 2];
+        for (int i = 0; i < bytes.length; i++) {
+            bytes[i] = (byte) Integer.parseInt(hex.substring(2 * i, 2 * i + 2), 16);
+        }
+        return bytes;
     }
     
     // Takes a message and signs it with the private key of the current wallet
@@ -449,28 +468,27 @@ public class Web3AJ extends AWeb3AJ{
         return Utils.getCloudFunctions(logger).getCalleeDomain(callee);
     }
 
-
-    public void prepareForProof() {
+    // public void prepareForProof() {
         
-        String nullifier = "8273492374982734987293479283749237498231231231234";// Generate here a byte 31 crypto bytes
-        String Secret = "8273492374982734987293479283749237498234" ;// Generate here a byte 31 crypto bytes
-        dataSaveHelper.setPreference("nullifier", nullifier);
-        dataSaveHelper.setPreference("secret", Secret);
+    //     String nullifier = "8273492374982734987293479283749237498231231231234";// Generate here a byte 31 crypto bytes
+    //     String Secret = "8273492374982734987293479283749237498234" ;// Generate here a byte 31 crypto bytes
+    //     dataSaveHelper.setPreference("nullifier", nullifier);
+    //     dataSaveHelper.setPreference("secret", Secret);
 
-    }
+    // }
 
 
-    public void send_mediator(String url) {
-        if (
-            dataSaveHelper.getPreference("secret", null) == null && 
-            dataSaveHelper.getPreference("nullifier", null) == null) {
-                prepareForProof();
-        }
+    // public void send_mediator(String url) {
+    //     if (
+    //         dataSaveHelper.getPreference("secret", null) == null && 
+    //         dataSaveHelper.getPreference("nullifier", null) == null) {
+    //             prepareForProof();
+    //     }
 
-        String secret = dataSaveHelper.getPreference("secret", null);
-        String nullifier = dataSaveHelper.getPreference("nullifier", null );
+    //     String secret = dataSaveHelper.getPreference("secret", null);
+    //     String nullifier = dataSaveHelper.getPreference("nullifier", null );
         
-        Utils.getCloudFunctions(logger).openMedianShop(url,secret,nullifier);
-    }
+    //     Utils.getCloudFunctions(logger).openMedianShop(url,secret,nullifier);
+    // }
 }
 

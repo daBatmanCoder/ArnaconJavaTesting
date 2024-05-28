@@ -41,7 +41,7 @@ public class InitAppWeb2 {
         logger.debug("Store: " + ipfsContent);
 
         // generate_commitment(nullifier,secret)
-        Web3Service.prepareForProof();
+        // Web3Service.prepareForProof();
 
         // // Choose a product
         logger.debug("Enter package you want:");
@@ -61,7 +61,7 @@ public class InitAppWeb2 {
         // window.href(url);
         logger.debug("Payment URL: " + url);
 
-        Web3Service.send_mediator(url);
+        // Web3Service.send_mediator(url);
 
         scanner.nextLine();
         scanner.close();
@@ -69,23 +69,13 @@ public class InitAppWeb2 {
         String fcm_token = "Cl2fX1UQt-R7vY0NxmVV9:APA91bHZdgZ4XvSvq5FDTBI7SCMY1794XQEHpjYE9I_tUIgb5nqoyqt4xoSut_Il7wqW1pFOwV75I80-CvwkQ7NgCqTU9HWGUhp_TZbsbZS3NvxjNcYUTjpKghVxRijafkrE-Wn3hIRH";
         Web3Service.sendFCM(fcm_token);
 
-        String domainOfCallee = Web3Service.getCalleeDomain("dIamIORAGOdNDrDv");
+        String domainOfCallee = Web3Service.getCalleeDomain("WcF94LY7UTmZ59cm.cellact");
         logger.debug("Domain of callee: " + domainOfCallee);
-        long startTime = System.nanoTime();
  
         String XData = Web3Service.getXData();
         logger.debug("XData: " + XData);
         String XSign = Web3Service.getXSign(XData);
         logger.debug("XSign: " + XSign);
-
-        // End time
-        long endTime = System.nanoTime();
-
-        // Calculate the duration
-        long duration = (endTime - startTime);  // Duration in nanoseconds
-
-        // Convert nanoseconds to milliseconds
-        System.out.println("Execution time of yourFunction: " + duration / 1_000_000 + " milliseconds");
 
     }
 }

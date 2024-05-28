@@ -28,7 +28,7 @@ public class CloudFunctions {
     private String send_fcm_url;
     private String send_register_ayala;
     private String get_callee_domain;
-    private String median_to_generate_proof_url;
+    // private String median_to_generate_proof_url;
     public  String send_stripe_url;
 
     private ALogger logger;
@@ -47,7 +47,7 @@ public class CloudFunctions {
         this.send_fcm_url = urlsObject.getString(               "send_secure_fcmToken");
         this.send_register_ayala = urlsObject.getString(        "register_ayala");
         this.get_callee_domain = urlsObject.getString(          "get_callee_domain");
-        this.median_to_generate_proof_url = urlsObject.getString(          "median_url"); // Needs to add this to the cloud still
+        // this.median_to_generate_proof_url = urlsObject.getString(          "median_url"); // Needs to add this to the cloud still
 
     }
 
@@ -169,10 +169,6 @@ public class CloudFunctions {
         
         return serviceProvidersArray;
     }
-
-    private void openWindow(String url, String json_of_load){
-        // Open window here with the json_of_load as parameter in order to genrate the commitment and the proof on the median website
-    }
      
     public String getUserENS(String userAddress, @Nullable String customerId) {
         try {
@@ -250,13 +246,13 @@ public class CloudFunctions {
         return requestPostToCloud(get_callee_domain, jsonInputString);
     }
 
-    public void openMedianShop(
-        String url, 
-        String secret, 
-        String nullifier
-    ) {
-        String jsonInputString = "{\"url\": \"" + url + "\", \"secret\": \"" + secret + "\", \"nullifier\": \"" + nullifier + "\"}";
-        openWindow(median_to_generate_proof_url, jsonInputString);
-    }
+    // public void openMedianShop(
+    //     String url, 
+    //     String secret, 
+    //     String nullifier
+    // ) {
+    //     String jsonInputString = "{\"url\": \"" + url + "\", \"secret\": \"" + secret + "\", \"nullifier\": \"" + nullifier + "\"}";
+    //     openWindow(median_to_generate_proof_url, jsonInputString);
+    // }
 
 }
