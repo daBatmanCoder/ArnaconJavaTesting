@@ -28,8 +28,7 @@ public class CloudFunctions {
     private String send_fcm_url;
     private String send_register_ayala;
     private String get_callee_domain;
-    // private String register_ens;
-    // private String median_to_generate_proof_url;
+    private String register_new_product;
     public  String send_stripe_url;
 
     private ALogger logger;
@@ -48,8 +47,7 @@ public class CloudFunctions {
         this.send_fcm_url = urlsObject.getString(               "send_secure_fcmToken");
         this.send_register_ayala = urlsObject.getString(        "register_ayala");
         this.get_callee_domain = urlsObject.getString(          "get_callee_domain");
-        // this.median_to_generate_proof_url = urlsObject.getString(          "median_url"); // Needs to add this to the cloud still
-
+        this.register_new_product = urlsObject.getString(       "register_new_product");
     }
 
     public static CloudFunctions getCloudFunctions(ALogger logger) {
@@ -247,18 +245,10 @@ public class CloudFunctions {
         return requestPostToCloud(get_callee_domain, jsonInputString);
     }
 
-    // public String setNewENS(String ens, String SignedENS, String user_address) {
-    //     String jsonInputString = "{\"user_address\": \"" + user_address + "\", \"SignedENS\": \"" + SignedENS + "\", \"ens\": \"" + ens + "\"}";
-    //     return requestPostToCloud(register_ens, jsonInputString);
-    // }
-
-    // public void openMedianShop(
-    //     String url, 
-    //     String secret, 
-    //     String nullifier
-    // ) {
-    //     String jsonInputString = "{\"url\": \"" + url + "\", \"secret\": \"" + secret + "\", \"nullifier\": \"" + nullifier + "\"}";
-    //     openWindow(median_to_generate_proof_url, jsonInputString);
-    // }
+    public void registerNewProduct(String data_to_sign, String data_signed, String publicKey, String owner_sign) {
+        String jsonInputString = "{\"data\": \"" + data_to_sign + "\", \"data_signed\": \"" + data_signed + "\", \"address\": \"" + publicKey + "\", \"owner_sign\": \"" + owner_sign + "\"}";
+        logger.debug("jsonInputString: " + jsonInputString);
+        // requestPostToCloud(register_new_product, jsonInputString);
+    }
 
 }

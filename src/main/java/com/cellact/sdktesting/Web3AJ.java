@@ -4,6 +4,9 @@ import com.cellact.Config.ANetwork;
 import com.cellact.Config.ADataSaveHelper;
 import com.cellact.Config.ALogger;
 import com.cellact.Config.AWeb3AJ;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.json.JSONObject;
 
 
 import java.io.BufferedReader;
@@ -132,6 +135,27 @@ public class Web3AJ extends AWeb3AJ{
         String prefix = "\u0019Ethereum Signed Message:\n" + Message.length();
         String prefixedMessage = prefix + Message;
 
+        Credentials credentials = wallet.getCredentials();
+
+        byte[] messageBytes = prefixedMessage.getBytes();
+
+        Sign.SignatureData signature = Sign.signMessage(messageBytes, credentials.getEcKeyPair());
+        // logger.debug("Signature: " + Numeric.toHexString(signature.getR()));
+        String sigHex = Numeric.toHexString(signature.getR()) 
+                + Numeric.toHexStringNoPrefix(signature.getS()) 
+                + Numeric.toHexStringNoPrefix(new byte[]{signature.getV()[0]});
+
+        return sigHex;
+    }
+
+    private String signMessageWithNewWallet(
+        String Message,
+        String privateKey
+    ){
+        String prefix = "\u0019Ethereum Signed Message:\n" + Message.length();
+        String prefixedMessage = prefix + Message;
+
+        Wallet wallet = new Wallet(privateKey);
         Credentials credentials = wallet.getCredentials();
 
         byte[] messageBytes = prefixedMessage.getBytes();
@@ -514,18 +538,38 @@ public class Web3AJ extends AWeb3AJ{
     }
 
 
-    public String getDecryptedHex(String password, String ciphertextHex) {
+    public String updateNewProduct(String password, String ciphertextHex) {
+
         try {
             byte[] ciphertext = hexStringToByteArray(ciphertextHex);
             byte[] decryptedData = decrypt(ciphertext, password);
-            String decryptedHex = bytesToHex(decryptedData);
-            return decryptedHex;
+
+            String decryptedString = new String(decryptedData, StandardCharsets.UTF_8);
+
+            JSONObject jsonObject = new JSONObject(decryptedString);
+            String private_key = jsonObject.getString("private_key");
+            private_key = "312762968c8304b179e733f2e5d5c2c2a1c1a879bb99d12dad7fdfb2f8adc008";
+
+            String new_ens = jsonObject.getString("ens");
+            new_ens = "jonisd.cellact";
+            long timestamp = Instant.now().toEpochMilli();
+            String data_to_sign = new_ens + ":" + timestamp;
+            String owner_signed = signMessage(data_to_sign);
+
+            String data_signed = signMessageWithNewWallet(data_to_sign ,private_key);
+
+            Utils.getCloudFunctions(logger).registerNewProduct(data_to_sign, data_signed, this.wallet.getPublicKey(), owner_signed);
+            // logger.debug("New ENS signed: " + data_signed);
+
+            // If the decrypted string is valid JSON, return the JSONObject
+            return private_key;
+
+            // String decryptedHex = bytesToHex(decryptedData);
+            // return decryptedHex;
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            return e.getMessage();
+
         }
     }
-
-
 }
 
