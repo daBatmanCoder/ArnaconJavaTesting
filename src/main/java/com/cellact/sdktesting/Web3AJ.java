@@ -548,10 +548,8 @@ public class Web3AJ extends AWeb3AJ{
 
             JSONObject jsonObject = new JSONObject(decryptedString);
             String private_key = jsonObject.getString("private_key");
-            private_key = "312762968c8304b179e733f2e5d5c2c2a1c1a879bb99d12dad7fdfb2f8adc008";
 
             String new_ens = jsonObject.getString("ens");
-            new_ens = "jonisd.cellact";
             long timestamp = Instant.now().toEpochMilli();
             String data_to_sign = new_ens + ":" + timestamp;
             String owner_signed = signMessage(data_to_sign);
