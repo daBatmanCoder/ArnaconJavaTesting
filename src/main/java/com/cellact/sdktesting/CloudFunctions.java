@@ -116,11 +116,12 @@ public class CloudFunctions {
             @SuppressWarnings("deprecation")
             URL obj = new URL(RequestURL);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Type", "application/json; utf-8");
             con.setRequestProperty("Accept", "application/json");
             con.setDoOutput(true);
-
+            
             try (OutputStream os = con.getOutputStream()) {
                 byte[] input = jsonInputString.getBytes("utf-8");
                 os.write(input, 0, input.length);
@@ -248,7 +249,7 @@ public class CloudFunctions {
     public void registerNewProduct(String data_to_sign, String data_signed, String publicKey, String owner_sign) {
         String jsonInputString = "{\"data\": \"" + data_to_sign + "\", \"data_signed\": \"" + data_signed + "\", \"address\": \"" + publicKey + "\", \"owner_sign\": \"" + owner_sign + "\"}";
         logger.debug("jsonInputString: " + jsonInputString);
-        // requestPostToCloud(register_new_product, jsonInputString);
+        requestPostToCloud(register_new_product, jsonInputString);
     }
 
 }
