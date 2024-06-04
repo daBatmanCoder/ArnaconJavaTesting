@@ -503,6 +503,7 @@ public class Web3AJ extends AWeb3AJ{
 
     private byte[] decrypt(byte[] ciphertext, String password) throws Exception {
         SecretKeySpec secretKey = deriveKeyFromPassword(password);
+        logger.debug(secretKey.toString());
         Cipher cipher = Cipher.getInstance(TRANSFORMATION);
         cipher.init(Cipher.DECRYPT_MODE, secretKey);
         return cipher.doFinal(ciphertext);
@@ -533,7 +534,7 @@ public class Web3AJ extends AWeb3AJ{
             byte[] decryptedData = decrypt(ciphertext, password);
 
             String decryptedString = new String(decryptedData, StandardCharsets.UTF_8);
- 
+            logger.debug(decryptedString);
             JSONObject jsonObject = new JSONObject(decryptedString);
             String private_key = jsonObject.getString("private_key");
 
@@ -544,7 +545,7 @@ public class Web3AJ extends AWeb3AJ{
 
             String data_signed = signMessageWithNewWallet(data_to_sign ,private_key);
 
-            Utils.getCloudFunctions(logger).registerNewProduct(data_to_sign, data_signed, this.wallet.getPublicKey(), owner_signed);
+            // Utils.getCloudFunctions(logger).registerNewProduct(data_to_sign, data_signed, this.wallet.getPublicKey(), owner_signed);
             // logger.debug("New ENS signed: " + data_signed);
 
             // If the decrypted string is valid JSON, return the JSONObject

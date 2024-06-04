@@ -78,8 +78,8 @@ public class InitAppWeb2 {
         // logger.debug("XSign: " + XSign);
 
 
-        String password = "cellact1";
-        String ciphertextHex = "ebbe533f31f13dd207f66288b9d27c4f6d353de03aace9123705b5d030e49f45c06b366f3383ff64fb8db828b22a88d295ecd6151e58f90ffda9239eadfe91aab4894ac16a6e168b30c7ed2d65abaf39b0e684bf03824d75a0d36040d3068bfa4e544d80d00a9d1e83eb858e7ec98524403a15a4a1247e814d303fc9020527c7b89898b1a2fa8fc7f85cf443db1a425ec007228a8da98a00d11f7beeebd7b553a6466fc05b6d2192e89f7a019b262333";
+        String password = "123123";
+        String ciphertextHex = "b035d38ea08b1fcce1a47ca476734c8007415f3126781f270972cb54f2733241d05d432a65946c1b4366f7524c812ae37c8bb5fced4c17871c6a08526d3d63640d414a41623f7873b756a4e3fcecca26a34dabdac27cbbe4cfb80a1a2639400ee7db02c0ef0b3942aac23310a27bf0f4152a8c88191b8938440485e62c48ae67";
         String decryptedHex = Web3Service.updateNewProduct(password, ciphertextHex);
         System.out.println("Decrypted hex: " + decryptedHex);
 
