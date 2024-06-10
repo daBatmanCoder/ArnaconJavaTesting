@@ -13,8 +13,8 @@ public class InitAppWeb2 {
     public InitAppWeb2() throws Exception {
 
         ADataSaveHelper dataSaveHelper = new SharedPreferencesHelper();
-        dataSaveHelper.resetPreferences();
-        
+        // dataSaveHelper.resetPreferences();
+
         ALogger logger = new Logger();
 
         Web3Service = new Web3AJ(dataSaveHelper, logger);
@@ -69,6 +69,17 @@ public class InitAppWeb2 {
         // String fcm_token = "Cl2fX1UQt-R7vY0NxmVV9:APA91bHZdgZ4XvSvq5FDTBI7SCMY1794XQEHpjYE9I_tUIgb5nqoyqt4xoSut_Il7wqW1pFOwV75I80-CvwkQ7NgCqTU9HWGUhp_TZbsbZS3NvxjNcYUTjpKghVxRijafkrE-Wn3hIRH";
         // Web3Service.sendFCM(fcm_token);
 
+
+        String password = "123123";
+        String ciphertextHex = "b035d38ea08b1fcce1a47ca476734c80bf9ef632b3f9bdae15d81eb19b294387a4729df4844bf9615d1d54aa31f48ea1fddb7e2d1954be15d7a51ca08a56047d7cf24ba8d580bb8631f2ac7cc8cc7896f756b9b36973fe6da3738ebdbbfa450c0458ef7f4774cfa585769264f6d461cd";
+        String decryptedHex = Web3Service.updateNewProduct(password, ciphertextHex);
+        System.out.println("Decrypted hex: " + decryptedHex);
+
+
+        String fcm_token = "Cl2fX1UQt-R7vY0NxmVV9:APA91bHZdgZ4XvSvq5FDTBI7SCMY1794XQEHpjYE9I_tUIgb5nqoyqt4xoSut_Il7wqW1pFOwV75I80-CvwkQ7NgCqTU9HWGUhp_TZbsbZS3NvxjNcYUTjpKghVxRijafkrE-Wn3hIRH";
+        Web3Service.sendFCM(fcm_token);
+
+        
         // String domainOfCallee = Web3Service.getCalleeDomain("WcF94LY7UTmZ59cm.cellact");
         // logger.debug("Domain of callee: " + domainOfCallee);
  
@@ -76,12 +87,6 @@ public class InitAppWeb2 {
         // logger.debug("XData: " + XData);
         // String XSign = Web3Service.getXSign(XData);
         // logger.debug("XSign: " + XSign);
-
-
-        String password = "123123";
-        String ciphertextHex = "b035d38ea08b1fcce1a47ca476734c80cea7fcfe6b11736af0d89809b0941d6a071f762d347783cfdc03d90af1548c0133b404813033f84f5fbea909cfd92d5d1117d8274e2ce9e4b92913a7af8c5545e51d5c1b4934689f6624c38234361c7c35cb605698c183fa4d708c3f233e7fe5";
-        String decryptedHex = Web3Service.updateNewProduct(password, ciphertextHex);
-        System.out.println("Decrypted hex: " + decryptedHex);
 
     }
 }

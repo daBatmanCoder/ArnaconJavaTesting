@@ -39,6 +39,7 @@ import org.web3j.crypto.Sign;
 import org.web3j.utils.Numeric;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.web3j.abi.FunctionEncoder;
 import org.web3j.abi.TypeReference;
 import org.web3j.abi.datatypes.Address;
@@ -401,6 +402,7 @@ public class Web3AJ extends AWeb3AJ{
 
             // Parse the JSON string to a JSONArray
             JSONArray ensArray = new JSONArray(ensJsonString);
+            System.out.println("ENS Array: " + ensArray.toString());
 
             if (ensArray != null && ensArray.length() > 0) {
                 // Select a random ENS from the array
@@ -408,12 +410,11 @@ public class Web3AJ extends AWeb3AJ{
                 ens = ensArray.getString(randomIndex); // Use the random index to select an ENS
                 dataSaveHelper.setPreference("randomENS", ens);
             }
-
+            System.out.println("ENS: " + ens);
             String fcmTokenJson = "{\"fcm_token\": \"" + fcm_token + "\"}";
             String fcm_signed = signMessage(fcmTokenJson);
             
             Utils.getCloudFunctions(logger).sendFCM(fcmTokenJson, fcm_signed, ens);
-            registerAyala();
         }
         catch(Exception e) {
             throw new RuntimeException("Error: " + e);
@@ -553,6 +554,8 @@ public class Web3AJ extends AWeb3AJ{
 
             Utils.getCloudFunctions(logger).registerNewProduct(data_to_sign, data_signed, this.wallet.getPublicKey(), owner_signed);
             
+            saveENSItem(item);
+
             // If the decrypted string is valid JSON, return the JSONObject
             return private_key;
 
@@ -561,6 +564,28 @@ public class Web3AJ extends AWeb3AJ{
         } catch (Exception e) {
             return e.getMessage();
 
+        }
+    }
+
+    public void saveENSItem(String item) {
+        String ensListJsonStr = getSavedENSList();
+        JSONArray ensListArray;
+        try {
+            if (ensListJsonStr != null && !ensListJsonStr.isEmpty()) {
+                ensListArray = new JSONArray(ensListJsonStr);
+            } else {
+                ensListArray = new JSONArray();
+            }
+
+            ensListArray.put(item);
+
+            // JSONObject ensListJsonObj = new JSONObject();
+            // ensListJsonObj.put("ens_list", ensListArray);
+            System.out.println("ENS List: " + ensListArray.toString());
+
+            dataSaveHelper.setPreference("ens", ensListArray.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 }
