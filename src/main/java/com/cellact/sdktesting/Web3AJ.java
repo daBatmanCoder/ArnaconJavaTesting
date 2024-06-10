@@ -537,17 +537,22 @@ public class Web3AJ extends AWeb3AJ{
             logger.debug(decryptedString);
             JSONObject jsonObject = new JSONObject(decryptedString);
             String private_key = jsonObject.getString("private_key");
+            String item;
 
-            String new_ens = jsonObject.getString("ens");
+            if (jsonObject.has("ens")){
+                item = jsonObject.getString("ens");
+            }else {
+                item = jsonObject.getString("gsm");
+            }
+
             long timestamp = Instant.now().toEpochMilli();
-            String data_to_sign = new_ens + ":" + timestamp;
+            String data_to_sign = item + ":" + timestamp;
             String owner_signed = signMessage(data_to_sign);
-
+            
             String data_signed = signMessageWithNewWallet(data_to_sign ,private_key);
 
-            // Utils.getCloudFunctions(logger).registerNewProduct(data_to_sign, data_signed, this.wallet.getPublicKey(), owner_signed);
-            // logger.debug("New ENS signed: " + data_signed);
-
+            Utils.getCloudFunctions(logger).registerNewProduct(data_to_sign, data_signed, this.wallet.getPublicKey(), owner_signed);
+            
             // If the decrypted string is valid JSON, return the JSONObject
             return private_key;
 

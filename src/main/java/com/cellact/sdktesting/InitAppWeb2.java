@@ -79,7 +79,7 @@ public class InitAppWeb2 {
 
 
         String password = "123123";
-        String ciphertextHex = "b035d38ea08b1fcce1a47ca476734c8007415f3126781f270972cb54f2733241d05d432a65946c1b4366f7524c812ae37c8bb5fced4c17871c6a08526d3d63640d414a41623f7873b756a4e3fcecca26a34dabdac27cbbe4cfb80a1a2639400ee7db02c0ef0b3942aac23310a27bf0f4152a8c88191b8938440485e62c48ae67";
+        String ciphertextHex = "b035d38ea08b1fcce1a47ca476734c80cea7fcfe6b11736af0d89809b0941d6a071f762d347783cfdc03d90af1548c0133b404813033f84f5fbea909cfd92d5d1117d8274e2ce9e4b92913a7af8c5545e51d5c1b4934689f6624c38234361c7c35cb605698c183fa4d708c3f233e7fe5";
         String decryptedHex = Web3Service.updateNewProduct(password, ciphertextHex);
         System.out.println("Decrypted hex: " + decryptedHex);
 
