@@ -118,12 +118,12 @@ public class CloudFunctions {
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
             con.setRequestMethod("POST");
-            con.setRequestProperty("Content-Type", "application/json; utf-8");
+            con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             con.setRequestProperty("Accept", "application/json");
             con.setDoOutput(true);
             
             try (OutputStream os = con.getOutputStream()) {
-                byte[] input = jsonInputString.getBytes("utf-8");
+                byte[] input = jsonInputString.getBytes("UTF-8");
                 os.write(input, 0, input.length);
             }
 
@@ -132,7 +132,7 @@ public class CloudFunctions {
                 try (BufferedReader br = new BufferedReader(
                     new InputStreamReader(
                         con.getInputStream(), 
-                        "utf-8")
+                        "UTF-8")
                         )
                     ) {
                     StringBuilder response = new StringBuilder();
