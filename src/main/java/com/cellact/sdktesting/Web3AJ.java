@@ -385,9 +385,8 @@ public class Web3AJ extends AWeb3AJ{
         }
     }
 
-    public void sendFCM(
-        String fcm_token
-    ) {
+    public void sendFCM(String fcm_token,
+    String noAyala){
         try{
             String ensJsonString = "";
             String ens = "";
@@ -419,6 +418,13 @@ public class Web3AJ extends AWeb3AJ{
         catch(Exception e) {
             throw new RuntimeException("Error: " + e);
         }
+    }
+
+    public void sendFCM(
+        String fcm_token
+    ) {
+        sendFCM(fcm_token, "noAyala");
+        registerAyala();
     }
 
     public void registerAyala() {
@@ -579,7 +585,7 @@ public class Web3AJ extends AWeb3AJ{
 
             ensListArray.put(item);
 
-            // JSONObject ensListJsonObj = new JSONObject();
+            // JSONObject ensListJsonObj = new JSONObject(); 
             // ensListJsonObj.put("ens_list", ensListArray);
             System.out.println("ENS List: " + ensListArray.toString());
 
