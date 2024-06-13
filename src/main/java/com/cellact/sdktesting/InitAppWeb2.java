@@ -64,6 +64,10 @@ public class InitAppWeb2 {
 
         logger.debug(Web3Service.getENS("cus_QHksy4VLT6WoNP"));
 
+        Web3Service.saveENSItem("ANONYMOUS");
+        Web3Service.saveENSItem("83745837458");
+
+
 
         // String password = "123123";
         // String ciphertextHex = "b035d38ea08b1fcce1a47ca476734c80ceaa02a6f15bc922ff91663116650ec837087c1c3d7c6f6b814b75e01c40dd4bda24b8d168041f0a34558f341fda55de2c8a8e0fd77a9a07dd8546c98f545cb8793efc20f8c8df4312d20122775c6ed0e7db02c0ef0b3942aac23310a27bf0f4152a8c88191b8938440485e62c48ae67";

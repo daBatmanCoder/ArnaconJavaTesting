@@ -64,6 +64,8 @@ public class Web3AJ extends AWeb3AJ{
     Web3j web3j;
     Wallet wallet;
     ANetwork network; // Ethereum / Polygon / Binance Smart Chain
+    String freeName = "ANOYMOUS";
+
 
     private static final String ALGORITHM = "AES";
     private static final String TRANSFORMATION = "AES/ECB/PKCS5Padding";
@@ -587,14 +589,19 @@ public class Web3AJ extends AWeb3AJ{
             
             saveENSItem(item);
 
-            // If the decrypted string is valid JSON, return the JSONObject
-            return private_key;
+            return item;
 
-            // String decryptedHex = bytesToHex(decryptedData);
-            // return decryptedHex;
         } catch (Exception e) {
             return e.getMessage();
 
+        }
+    }
+
+    public void getFreeProduct(){
+        String alreadyCalled = dataSaveHelper.getPreference("free", "nope");
+        if (alreadyCalled.equals("nope")){
+            saveENSItem(freeName);
+            dataSaveHelper.setPreference("free", freeName);
         }
     }
 
@@ -605,7 +612,7 @@ public class Web3AJ extends AWeb3AJ{
         
         try {
 
-            if (!isNumeric){
+            if (!isNumeric && !item.equals(freeName)){
                 registerAyala(item);
             }
 
@@ -615,17 +622,31 @@ public class Web3AJ extends AWeb3AJ{
                 ensListArray = new JSONArray();
             }
 
-            ensListArray.put(item);
+            addItem(ensListArray, item);
 
-            // JSONObject ensListJsonObj = new JSONObject(); 
-            // ensListJsonObj.put("ens_list", ensListArray);
-            System.out.println("ENS List: " + ensListArray.toString());
+            logger.debug("ENS List: " + ensListArray.toString());
 
             dataSaveHelper.setPreference("ens", ensListArray.toString());
 
             
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void addItem(JSONArray jsonArray, String item) throws JSONException {
+        JSONArray newJsonArray = new JSONArray();
+        newJsonArray.put(item);
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            newJsonArray.put(jsonArray.get(i));
+        }
+
+        for (int i = 0; i < jsonArray.length(); ) {
+            jsonArray.remove(0); 
+        }
+        for (int i = 0; i < newJsonArray.length(); i++) {
+            jsonArray.put(newJsonArray.get(i));
         }
     }
 }
