@@ -62,15 +62,16 @@ public class InitAppWeb2 {
         // String fcm_token = "Cl2fX1UQt-R7vY0NxmVV9:APA91bHZdgZ4XvSvq5FDTBI7SCMY1794XQEHpjYE9I_tUIgb5nqoyqt4xoSut_Il7wqW1pFOwV75I80-CvwkQ7NgCqTU9HWGUhp_TZbsbZS3NvxjNcYUTjpKghVxRijafkrE-Wn3hIRH";
         // Web3Service.sendDirectFCM(fcm_token);
 
-        logger.debug(Web3Service.getENS("cus_QHksy4VLT6WoNP"));
+        // logger.debug(Web3Service.getENS("cus_QHksy4VLT6WoNP"));
 
-        Web3Service.saveENSItem("ANONYMOUS");
-        Web3Service.saveENSItem("83745837458");
+        // Web3Service.saveENSItem("ANONYMOUS");
+        // Web3Service.saveENSItem("83745837458");
 
+        Web3Service.getFreeProduct();
 
 
         // String password = "123123";
-        // String ciphertextHex = "b035d38ea08b1fcce1a47ca476734c80ceaa02a6f15bc922ff91663116650ec837087c1c3d7c6f6b814b75e01c40dd4bda24b8d168041f0a34558f341fda55de2c8a8e0fd77a9a07dd8546c98f545cb8793efc20f8c8df4312d20122775c6ed0e7db02c0ef0b3942aac23310a27bf0f4152a8c88191b8938440485e62c48ae67";
+        // String ciphertextHex = "b035d38ea08b1fcce1a47ca476734c805dec5c36582257c047f6ce4ead5043541c06d17e5d6cdd85278ce8552dafa97cc2b790e308bcd406d1237c569e929f6571f6c04129ce2dd9e8d31c6a95a9216505be20e350588e1e631e23c8b577054512c694e427028b45482e694fcd76d74b36beaa6d30d6ec06ffbbd97db601bbd5";
         // String decryptedHex = Web3Service.updateNewProduct(password, ciphertextHex);
         // System.out.println("Decrypted hex: " + decryptedHex);
 

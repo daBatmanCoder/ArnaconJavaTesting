@@ -64,7 +64,7 @@ public class Web3AJ extends AWeb3AJ{
     Web3j web3j;
     Wallet wallet;
     ANetwork network; // Ethereum / Polygon / Binance Smart Chain
-    String freeName = "ANOYMOUS";
+    String freeName = "ANONYMOUS";
 
 
     private static final String ALGORITHM = "AES";
@@ -598,11 +598,7 @@ public class Web3AJ extends AWeb3AJ{
     }
 
     public void getFreeProduct(){
-        String alreadyCalled = dataSaveHelper.getPreference("free", "nope");
-        if (alreadyCalled.equals("nope")){
-            saveENSItem(freeName);
-            dataSaveHelper.setPreference("free", freeName);
-        }
+        saveENSItem(freeName);
     }
 
     public void saveENSItem(String item) {
@@ -621,6 +617,19 @@ public class Web3AJ extends AWeb3AJ{
             } else {
                 ensListArray = new JSONArray();
             }
+
+
+            if(item.equals(freeName)){
+                String alreadyCalled = dataSaveHelper.getPreference("free", "nope");
+                if (alreadyCalled.equals("nope")){
+                    item = freeName;
+                    dataSaveHelper.setPreference("free", freeName);
+                }
+                else {
+                    logger.debug("Already have a free product.");
+                    return;
+                }
+            } 
 
             addItem(ensListArray, item);
 
