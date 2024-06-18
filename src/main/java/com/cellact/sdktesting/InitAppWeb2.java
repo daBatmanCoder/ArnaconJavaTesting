@@ -13,17 +13,40 @@ public class InitAppWeb2 {
     public InitAppWeb2() throws Exception {
 
         ADataSaveHelper dataSaveHelper = new SharedPreferencesHelper();
-        // dataSaveHelper.resetPreferences();
+        dataSaveHelper.resetPreferences();
 
         ALogger logger = new Logger();
 
         Web3Service = new Web3AJ(dataSaveHelper, logger);
 
+
+
         logger.debug("Public key: " + Web3Service.wallet.getPublicKey());  
+        Scanner scanner = new Scanner(System.in);
+        scanner.nextLine();
 
-        // Scanner scanner = new Scanner(System.in);
+
+        logger.debug(Web3Service.getCalleDomainDirect("9LJx5uElxhvhnfMW.cellact"));
+        scanner.nextLine();
+
+        long startTime = System.currentTimeMillis(); // Add this line
+        logger.debug(Web3Service.getCalleDomainDirect("9LJx5uElxhvhnfMW.cellact"));
+        long endTime = System.currentTimeMillis(); // Add this line
+        long executionTime = endTime - startTime; // Calculate the execution time
+        logger.debug("Execution time of local call to contract: " + executionTime + " milliseconds"); // Log the execution time
+
+        scanner.nextLine();
+
+        startTime = System.currentTimeMillis(); // Add this line
+
+        logger.debug(Web3Service.getCalleeDomain("9LJx5uElxhvhnfMW.cellact"));
+
+        endTime = System.currentTimeMillis(); // Add this line
+        executionTime = endTime - startTime; // Calculate the execution time
+        logger.debug("Execution time for the google cloud function: " + executionTime + " milliseconds"); // Log the execution time
 
 
+        // Rest of the code.
         // String[] serviceProviders = Web3Service.getServiceProviderList(); // Change for a generic URL for the service provider 
         // int counter = 1;
         // for (String provider : serviceProviders) {
@@ -64,10 +87,12 @@ public class InitAppWeb2 {
 
         // logger.debug(Web3Service.getENS("cus_QHksy4VLT6WoNP"));
 
-        // Web3Service.saveENSItem("ANONYMOUS");
-        // Web3Service.saveENSItem("83745837458");
+        // Web3Service.saveProduct("ANONYMOUS");
+        // Web3Service.saveProduct("83745837458");
+        // Web3Service.saveProduct("83745837458123");
 
-        Web3Service.getFreeProduct();
+
+        // Web3Service.getFreeProduct();
 
 
         // String password = "123123";

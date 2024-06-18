@@ -17,7 +17,6 @@ public class Network implements ANetwork{
     public Network(String _networkName) {
         try {
             this.networkName = _networkName;
-            
             JSONObject networkConfig = Utils.getCloudFunctions(null).getNetwork(networkName);
             this.ENTRY_POINT_URL = networkConfig.getString("entry_point_url");
             this.CHAIN_ID = networkConfig.getInt("chain_id");
@@ -25,7 +24,7 @@ public class Network implements ANetwork{
         } catch (Exception e) {
             e.printStackTrace();
             this.ENTRY_POINT_URL = "https://polygon-amoy-bor-rpc.publicnode.com";
-            this.CHAIN_ID = 80001;
+            this.CHAIN_ID = 80002;
         }
     }
 

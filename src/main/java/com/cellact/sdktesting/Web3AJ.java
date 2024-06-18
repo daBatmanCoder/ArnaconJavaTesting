@@ -1,6 +1,9 @@
 package com.cellact.sdktesting;
 
+
 import com.cellact.Config.ANetwork;
+import com.cellact.ContractsABI.Hlui;
+
 import com.cellact.Config.ADataSaveHelper;
 import com.cellact.Config.ALogger;
 import com.cellact.Config.AWeb3AJ;
@@ -31,6 +34,7 @@ import java.time.Instant;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
+import java.security.Identity;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -50,20 +54,25 @@ import org.web3j.crypto.RawTransaction;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.request.Transaction;
+import org.web3j.protocol.core.methods.response.EthCall;
 import org.web3j.protocol.core.methods.response.EthEstimateGas;
 import org.web3j.protocol.core.methods.response.EthGasPrice;
 import org.web3j.protocol.core.methods.response.EthGetBalance;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
+import org.web3j.protocol.http.HttpService;
+import org.web3j.tx.Contract;
 import org.web3j.tx.RawTransactionManager;
+import org.web3j.tx.ReadonlyTransactionManager;
 import org.web3j.tx.TransactionManager;
+import org.web3j.tx.gas.DefaultGasProvider;
 import org.web3j.tx.response.PollingTransactionReceiptProcessor;
 
 
 public class Web3AJ extends AWeb3AJ{
 
     Web3j web3j;
-    Wallet wallet;
-    ANetwork network; // Ethereum / Polygon / Binance Smart Chain
+    Wallet wallet;;
+    ANetwork network = new Network(); // Ethereum / Polygon / Binance Smart Chain
     String freeName = "ANONYMOUS";
 
 
@@ -74,7 +83,7 @@ public class Web3AJ extends AWeb3AJ{
     public Web3AJ(
         ADataSaveHelper dataSaveHelper, 
         ALogger logger
-    ) {
+    ) throws Exception {
         super(dataSaveHelper, logger); // Saves the logger and datahelper and init the cloudfunctions class with logger
 
         String privateKey = dataSaveHelper.getPreference("privateKey", null);
@@ -234,6 +243,20 @@ public class Web3AJ extends AWeb3AJ{
         );
         
         return response.getTransactionHash();
+    }
+
+    String getCalleDomain(String domain) throws Exception {
+
+        Web3j web3j = Web3j.build(new HttpService(this.network.getRPC()));
+
+        Hlui contractHLUI = Hlui.load(
+                Contracts.getContracts(logger).getHLUI(),
+                web3j,
+                new ReadonlyTransactionManager(web3j, this.wallet.getPublicKey()),  // For view functions, no credentials are needed
+                new DefaultGasProvider()
+        );
+
+        return contractHLUI.getServiceProviderDomain(domain).send();
     }
 
     // Buys our ENS (for web2 users)
@@ -587,7 +610,7 @@ public class Web3AJ extends AWeb3AJ{
 
             Utils.getCloudFunctions(logger).registerNewProduct(data_to_sign, data_signed, this.wallet.getPublicKey(), owner_signed);
             
-            saveENSItem(item);
+            saveProduct(item);
 
             return item;
 
@@ -598,10 +621,10 @@ public class Web3AJ extends AWeb3AJ{
     }
 
     public void getFreeProduct(){
-        saveENSItem(freeName);
+        saveProduct(freeName);
     }
 
-    public void saveENSItem(String item) {
+    public void saveProduct(String item) {
         boolean isNumeric = item.matches("^\\d+$");
         String ensListJsonStr = getSavedENSList();
         JSONArray ensListArray;

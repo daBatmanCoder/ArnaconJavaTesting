@@ -8,13 +8,15 @@ public class Contracts implements AContract{
     
     String NAME_HASH_ADDRESS;
     String W_ENS_ADDRESS;
+    String HLUI;
 
     private static Contracts instance;
 
     private Contracts(ALogger logger) {
         try {
-            this.NAME_HASH_ADDRESS = Utils.getCloudFunctions(logger).getContractAddress("NAME_HASH_ADDRESS");
-            this.W_ENS_ADDRESS = Utils.getCloudFunctions(logger).getContractAddress("W_ENS_ADDRESS");
+            // this.NAME_HASH_ADDRESS = Utils.getCloudFunctions(logger).getContractAddress("NAME_HASH_ADDRESS");
+            this.W_ENS_ADDRESS = Utils.getCloudFunctions(logger).getContractAddress("new-ens");
+            this.HLUI = Utils.getCloudFunctions(logger).getContractAddress("hlui");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -31,14 +33,16 @@ public class Contracts implements AContract{
         return instance;
     }
 
-    public String getNameHashAddress() {
-        return this.NAME_HASH_ADDRESS;
-    }
+    // public String getNameHashAddress() {
+    //     return this.NAME_HASH_ADDRESS;
+    // }
 
-    public String getWENSAddress() {
-        return this.W_ENS_ADDRESS;
-    }
+    // public String getWENSAddress() {
+    //     return this.W_ENS_ADDRESS;
+    // }
 
-    
+    public String getHLUI() {
+        return this.HLUI;
+    }
 
 }

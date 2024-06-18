@@ -31,6 +31,7 @@ public class Utils {
         return ContractsInst;
     }
 
+
     static String PAYMENT_DEEPLINK_OK = "https://success-java.vercel.app/";
     static String PAYMENT_DEEPLINK_NOK = "https://failure-java.vercel.app/";
 
@@ -147,4 +148,6 @@ public class Utils {
 
         return null;
     }
+
+
 }
