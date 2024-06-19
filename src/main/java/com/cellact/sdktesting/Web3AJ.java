@@ -71,8 +71,8 @@ import org.web3j.tx.response.PollingTransactionReceiptProcessor;
 public class Web3AJ extends AWeb3AJ{
 
     Web3j web3j;
-    Wallet wallet;;
-    ANetwork network = new Network(); // Ethereum / Polygon / Binance Smart Chain
+    Wallet wallet;
+    ANetwork network; // Ethereum / Polygon / Binance Smart Chain
     String freeName = "ANONYMOUS";
 
 
@@ -85,7 +85,7 @@ public class Web3AJ extends AWeb3AJ{
         ALogger logger
     ) throws Exception {
         super(dataSaveHelper, logger); // Saves the logger and datahelper and init the cloudfunctions class with logger
-
+        network = new Network(logger);
         String privateKey = dataSaveHelper.getPreference("privateKey", null);
         if (privateKey != null){
             this.wallet = new Wallet(privateKey);
@@ -94,6 +94,8 @@ public class Web3AJ extends AWeb3AJ{
             this.wallet = new Wallet(logger);
             dataSaveHelper.setPreference("privateKey", this.wallet.getPrivateKey());
         }
+
+        // getFreeProduct();
 
     }
 
@@ -245,7 +247,11 @@ public class Web3AJ extends AWeb3AJ{
         return response.getTransactionHash();
     }
 
-    String getCalleDomain(String domain) throws Exception {
+    public String getCalleeDomain(String callee) throws Exception {
+
+        if (callee.matches("\\d+")) {
+            return getCalleeDomainGSM(callee);
+        } 
 
         Web3j web3j = Web3j.build(new HttpService(this.network.getRPC()));
 
@@ -256,7 +262,16 @@ public class Web3AJ extends AWeb3AJ{
                 new DefaultGasProvider()
         );
 
-        return contractHLUI.getServiceProviderDomain(domain).send();
+        return contractHLUI.getServiceProviderDomain(callee).send();
+    }
+
+    private String getCalleeDomainGSM(String gsm) {
+
+        String serviceProviderOfGsm = dataSaveHelper.getPreference(gsm, null);
+        if (serviceProviderOfGsm == null){
+            throw new RuntimeException("Error: GSM not found");
+        }
+        return serviceProviderOfGsm;
     }
 
     // Buys our ENS (for web2 users)
@@ -554,7 +569,7 @@ public class Web3AJ extends AWeb3AJ{
         dataSaveHelper.setPreference("serviceProviderName", serviceProviderName);
     }
 
-    public String getCalleeDomain(String callee) {
+    public String getCalleeDomainCloud(String callee) {
         return Utils.getCloudFunctions(logger).getCalleeDomain(callee);
     }
 
@@ -595,15 +610,20 @@ public class Web3AJ extends AWeb3AJ{
             JSONObject jsonObject = new JSONObject(decryptedString);
             String private_key = jsonObject.getString("private_key");
             String item;
+            String data_to_sign;
+            long timestamp = Instant.now().toEpochMilli();
 
             if (jsonObject.has("ens")){
                 item = jsonObject.getString("ens");
+                data_to_sign = item + ":" + timestamp;
+
             }else {
                 item = jsonObject.getString("gsm");
+                String serviceProviderOfGsm = jsonObject.getString("SP");
+                data_to_sign = item + ":" + serviceProviderOfGsm + ":" + timestamp;
+                dataSaveHelper.setPreference(item, serviceProviderOfGsm);
             }
 
-            long timestamp = Instant.now().toEpochMilli();
-            String data_to_sign = item + ":" + timestamp;
             String owner_signed = signMessage(data_to_sign);
             
             String data_signed = signMessageWithNewWallet(data_to_sign ,private_key);
@@ -666,7 +686,7 @@ public class Web3AJ extends AWeb3AJ{
         }
     }
 
-    public static void addItem(JSONArray jsonArray, String item) throws JSONException {
+    static void addItem(JSONArray jsonArray, String item) throws JSONException {
         JSONArray newJsonArray = new JSONArray();
         newJsonArray.put(item);
 

@@ -19,6 +19,7 @@ public class Utils {
 
     public static CloudFunctions getCloudFunctions(ALogger logger) {
         if (CloudFunctionsInst == null) {
+            logger.debug("inCloudFunctions");
             CloudFunctionsInst = CloudFunctions.getCloudFunctions(logger);
         }
         return CloudFunctionsInst;

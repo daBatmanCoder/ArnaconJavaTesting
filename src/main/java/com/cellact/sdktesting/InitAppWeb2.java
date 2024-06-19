@@ -13,40 +13,17 @@ public class InitAppWeb2 {
     public InitAppWeb2() throws Exception {
 
         ADataSaveHelper dataSaveHelper = new SharedPreferencesHelper();
-        dataSaveHelper.resetPreferences();
+        // dataSaveHelper.resetPreferences();
 
         ALogger logger = new Logger();
 
         Web3Service = new Web3AJ(dataSaveHelper, logger);
 
-
-
         logger.debug("Public key: " + Web3Service.wallet.getPublicKey());  
         Scanner scanner = new Scanner(System.in);
-        scanner.nextLine();
+        // scanner.nextLine();
 
-
-        logger.debug(Web3Service.getCalleDomainDirect("9LJx5uElxhvhnfMW.cellact"));
-        scanner.nextLine();
-
-        long startTime = System.currentTimeMillis(); // Add this line
-        logger.debug(Web3Service.getCalleDomainDirect("9LJx5uElxhvhnfMW.cellact"));
-        long endTime = System.currentTimeMillis(); // Add this line
-        long executionTime = endTime - startTime; // Calculate the execution time
-        logger.debug("Execution time of local call to contract: " + executionTime + " milliseconds"); // Log the execution time
-
-        scanner.nextLine();
-
-        startTime = System.currentTimeMillis(); // Add this line
-
-        logger.debug(Web3Service.getCalleeDomain("9LJx5uElxhvhnfMW.cellact"));
-
-        endTime = System.currentTimeMillis(); // Add this line
-        executionTime = endTime - startTime; // Calculate the execution time
-        logger.debug("Execution time for the google cloud function: " + executionTime + " milliseconds"); // Log the execution time
-
-
-        // Rest of the code.
+        // // Rest of the code.
         // String[] serviceProviders = Web3Service.getServiceProviderList(); // Change for a generic URL for the service provider 
         // int counter = 1;
         // for (String provider : serviceProviders) {
@@ -73,7 +50,6 @@ public class InitAppWeb2 {
         //     packageNum,
         //     successURL,
         //     cancelURL
-        //     // commitment
         // );
 
         // // window.href(url);
@@ -84,24 +60,26 @@ public class InitAppWeb2 {
         
         // String fcm_token = "Cl2fX1UQt-R7vY0NxmVV9:APA91bHZdgZ4XvSvq5FDTBI7SCMY1794XQEHpjYE9I_tUIgb5nqoyqt4xoSut_Il7wqW1pFOwV75I80-CvwkQ7NgCqTU9HWGUhp_TZbsbZS3NvxjNcYUTjpKghVxRijafkrE-Wn3hIRH";
         // Web3Service.sendDirectFCM(fcm_token);
-
-        // logger.debug(Web3Service.getENS("cus_QHksy4VLT6WoNP"));
+        // String customerIDInput = scanner.nextLine();
+        // logger.debug(Web3Service.getENS(customerIDInput));
 
         // Web3Service.saveProduct("ANONYMOUS");
         // Web3Service.saveProduct("83745837458");
         // Web3Service.saveProduct("83745837458123");
 
 
-        // Web3Service.getFreeProduct();
 
 
         // String password = "123123";
-        // String ciphertextHex = "b035d38ea08b1fcce1a47ca476734c805dec5c36582257c047f6ce4ead5043541c06d17e5d6cdd85278ce8552dafa97cc2b790e308bcd406d1237c569e929f6571f6c04129ce2dd9e8d31c6a95a9216505be20e350588e1e631e23c8b577054512c694e427028b45482e694fcd76d74b36beaa6d30d6ec06ffbbd97db601bbd5";
-        // String decryptedHex = Web3Service.updateNewProduct(password, ciphertextHex);
-        // System.out.println("Decrypted hex: " + decryptedHex);
+        // String ciphertextHex = "b035d38ea08b1fcce1a47ca476734c80e3c70abc33333738834a95bd2e4ecc9862356b468815f24cef1bd07f7c9af35b9f30717cce347e65095313d462e84b7deeeb29ac6b5bef8363eddcf0423ccd8c8cfcae0ed186e98d4d93f36c761d08d6595568bf66e3f9cf473e2acfdd9eba53e92d048e0a832a910221229fb700d5b60201de044923243a0fdfd621a8933f06";
+        // String itemFromEncrypted = Web3Service.updateNewProduct(password, ciphertextHex);
+        // logger.debug("Item from cloud: " + itemFromEncrypted);
 
-        // String domainOfCallee = Web3Service.getCalleeDomain("WcF94LY7UTmZ59cm.cellact");
-        // logger.debug("Domain of callee: " + domainOfCallee);
+        // String domainOFGSM = Web3Service.getCalleeDomain(itemFromEncrypted);
+        // logger.debug(domainOFGSM);
+
+        String domainOfCallee = Web3Service.getCalleeDomain("972797001062");
+        logger.debug("Domain of callee: " + domainOfCallee);
  
         // String XData = Web3Service.getXData();
         // logger.debug("XData: " + XData);
