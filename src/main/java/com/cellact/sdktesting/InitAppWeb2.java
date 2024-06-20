@@ -78,7 +78,7 @@ public class InitAppWeb2 {
         // String domainOFGSM = Web3Service.getCalleeDomain(itemFromEncrypted);
         // logger.debug(domainOFGSM);
 
-        String domainOfCallee = Web3Service.getCalleeDomain("972797001062");
+        String domainOfCallee = Web3Service.getGSMDomain("972797001062");
         logger.debug("Domain of callee: " + domainOfCallee);
  
         // String XData = Web3Service.getXData();

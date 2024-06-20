@@ -249,10 +249,6 @@ public class Web3AJ extends AWeb3AJ{
 
     public String getCalleeDomain(String callee) throws Exception {
 
-        if (callee.matches("\\d+")) {
-            return getCalleeDomainGSM(callee);
-        } 
-
         Web3j web3j = Web3j.build(new HttpService(this.network.getRPC()));
 
         Hlui contractHLUI = Hlui.load(
@@ -265,7 +261,15 @@ public class Web3AJ extends AWeb3AJ{
         return contractHLUI.getServiceProviderDomain(callee).send();
     }
 
-    private String getCalleeDomainGSM(String gsm) {
+    public void setGSMDomain(String gsm, String domain){
+        dataSaveHelper.setPreference(gsm, domain);
+    }
+
+    public String getGSMDomain(String gsm) {
+
+        if (!gsm.matches("\\d+")) {
+            throw new RuntimeException("Error: Invalid GSM");
+        } 
 
         String serviceProviderOfGsm = dataSaveHelper.getPreference(gsm, null);
         if (serviceProviderOfGsm == null){
